@@ -77,6 +77,7 @@ assert 'flags' do
   path = File.expand_path(File.join(__FILE__, "../../test.cruby/resources/ok.po"))
   iterator = GettextPO::File.read(path).message_iterator
   message = iterator.next
+  message.respond_to?(:workflow_flag?) or next true
   assert_false message.workflow_flag?('fuzzy')
   message.update_workflow_flag('fuzzy')
   assert_true message.workflow_flag?('fuzzy')

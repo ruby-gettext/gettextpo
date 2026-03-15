@@ -170,6 +170,7 @@ static const struct po_xerror_handler gettextpo_xerror_handler = {
   .xerror2 = gettextpo_xerror2,
 };
 
+#ifdef HAVE_PO_MESSAGE_GET_FORMAT
 /**
  * Document-class: GettextPO::FlagIterator
  */
@@ -204,6 +205,7 @@ gettextpo_po_flag_iterator_m_next (VALUE self)
   else
     rb_raise (rb_eStopIteration, "no more flag");
 }
+#endif
 
 /**
  * Document-class: GettextPO::Message
@@ -1144,9 +1146,11 @@ Init_gettextpo (void)
   rb_define_method (rb_cFilePos, "file", gettextpo_po_filepos_m_file, 0);
   rb_define_method (rb_cFilePos, "start_line",
                     gettextpo_po_filepos_m_start_line, 0);
+#ifdef HAVE_PO_MESSAGE_GET_FORMAT
   rb_cFlagIterator
       = rb_define_class_under (rb_mGettextPO, "FlagIterator", rb_cObject);
   rb_define_alloc_func (rb_cFlagIterator, gettextpo_po_flag_iterator_alloc);
   rb_define_method (rb_cFlagIterator, "next",
                     gettextpo_po_flag_iterator_m_next, 0);
+#endif
 }
