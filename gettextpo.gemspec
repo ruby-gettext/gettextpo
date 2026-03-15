@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+require 'rake'
 require_relative "lib/gettextpo/version"
 
 Gem::Specification.new do |spec|
@@ -33,15 +34,14 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://git.disroot.org/gemmaro/ruby-gettextpo.git"
 
-  # Specify which files should be added to the gem when it is released.
-  # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  gemspec = File.basename(__FILE__)
-  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
-    ls.readlines("\x0", chomp: true).reject do |f|
-      (f == gemspec) ||
-        f.start_with?(*%w[bin/ test/ spec/ features/ .git appveyor Gemfile])
-    end
-  end
+  spec.files = FileList[
+    '*.md', 'COPYING', 'Gemfile', 'Rakefile',
+    'ext/**/*.rb',
+    'ext/**/*.c',
+    'ext/**/*.h',
+    'lib/**/*.rb',
+    'mrblib/mrb_gettextpo_common.rb',
+  ]
   spec.require_paths = ["lib"]
   spec.extensions = ["ext/gettextpo/extconf.rb"]
   spec.metadata = {
