@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## CRuby version 0.2.1 - 2026-03-16
+
+- CRuby: Fix to work with gettext 0.23.
+
 ## CRuby and mruby version 0.2.0 - 2026-03-15
 
 - CRuby and mruby: Add `GettextPO::Message#file_positions`,
