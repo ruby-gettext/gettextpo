@@ -76,6 +76,28 @@ module GettextPO
       end
       positions
     end
+
+    def each_sticky_flag # yields: flag
+      iter = sticky_flag_iterator
+      while true
+        begin
+          yield iter.next
+        rescue StopIteration
+          return
+        end
+      end
+    end
+
+    def each_workflow_flag # yields: flag
+      iter = workflow_flag_iterator
+      while true
+        begin
+          yield iter.next
+        rescue StopIteration
+          return
+        end
+      end
+    end
   end
 
   class File
