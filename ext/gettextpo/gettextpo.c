@@ -803,6 +803,11 @@ gettextpo_po_file_m_domains (VALUE self)
 
 /**
  * call-seq: message_iterator (domain = nil) -> GettextPO::MessageIterator
+ *
+ * You may find it handy to use the #each_message method instead of
+ * this to iterate over the messages.  This method is for more
+ * versatile manipulation; the returned iterator can insert messages,
+ * for example.
  */
 VALUE
 gettextpo_po_file_m_message_iterator (int argc, VALUE *argv, VALUE self)

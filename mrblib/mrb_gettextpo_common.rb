@@ -78,6 +78,19 @@ module GettextPO
     end
   end
 
+  class File
+    def each_message(domain = nil) # yields: message
+      iter = message_iterator(domain)
+      while true
+        begin
+          yield iter.next
+        rescue StopIteration
+          return
+        end
+      end
+    end
+  end
+
   # This class doesn't provide the +new+ class method.  See also
   # GettextPO::Message#filepos.
   class FilePos

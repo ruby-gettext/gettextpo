@@ -66,6 +66,14 @@ assert 'message iterator' do
   true
 end
 
+assert 'each message' do
+  path = File.expand_path(File.join(__FILE__, "../../test.cruby/resources/ok.po"))
+  messages = []
+  GettextPO::File.read(path).each_message { |message| messages << message.msgid }
+  assert_equal ['', 'msgid1'], messages
+  true
+end
+
 assert 'header field' do
   assert_nil GettextPO::File.new.domain_header
 

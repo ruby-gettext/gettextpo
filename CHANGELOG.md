@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add `GettextPO::File#each_message` method.
+
 ## CRuby version 0.2.1 - 2026-03-16
 
 - CRuby: Fix to work with gettext 0.23.
