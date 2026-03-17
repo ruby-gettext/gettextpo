@@ -5,9 +5,10 @@
 - Add `GettextPO::Message#sticky_flags`,
   `GettextPO::Message#workflow_flags`, and `GettextPO::File#messages`
   methods.
-- Enable file each message method, message iterator each method flag
-  iterator each method, message each sticky flag method, and message
-  each workflow flag method to run without given block.
+- Enable `GettextPO::File#each`, `GettextPO::MessageIterator#each`,
+  `GettextPO::FlagIterator#each`,
+  `GettextPO::Message#each_sticky_flag`, and
+  `GettextPO::Message#each_workflow_flag` to run without given block.
 
 ## CRuby and mruby version 0.3.0 - 2026-03-17
 
