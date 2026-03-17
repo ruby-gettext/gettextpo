@@ -101,7 +101,12 @@ module GettextPO
   end
 
   class File
-    def each_message(domain = nil) # yields: message
+    # call-seq:
+    #   each_message (domain = nil) { |message| ... }
+    #   each_message (domain = nil) -> Enumerator
+    def each_message(domain = nil)
+      block_given? or return enum_for(__method__)
+
       iter = message_iterator(domain)
       while true
         begin

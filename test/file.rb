@@ -71,6 +71,10 @@ assert 'each message' do
   messages = []
   GettextPO::File.read(path).each_message { |message| messages << message.msgid }
   assert_equal ['', 'msgid1'], messages
+
+  assert_equal ['', 'msgid1'],
+               GettextPO::File.read(path).each_message.map { |message| message.msgid }
+
   true
 end
 

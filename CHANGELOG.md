@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix file each message without given block.
+
 ## CRuby and mruby version 0.3.0 - 2026-03-17
 
 - Add `GettextPO::File#each_message`,
