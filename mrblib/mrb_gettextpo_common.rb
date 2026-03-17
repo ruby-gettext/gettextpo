@@ -98,6 +98,10 @@ module GettextPO
       end
     end
 
+    def sticky_flags
+      each_sticky_flag.to_a
+    end
+
     # call-seq:
     #   each_workflow_flag { |flag| ... }
     #   each_workflow_flag -> Enumerator
@@ -112,6 +116,10 @@ module GettextPO
           return
         end
       end
+    end
+
+    def workflow_flags
+      each_workflow_flag.to_a
     end
   end
 
@@ -130,6 +138,10 @@ module GettextPO
           return
         end
       end
+    end
+
+    def messages(domain = nil)
+      each_message(domain).to_a
     end
   end
 

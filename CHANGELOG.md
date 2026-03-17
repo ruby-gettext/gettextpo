@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Add `GettextPO::Message#sticky_flags`,
+  `GettextPO::Message#workflow_flags`, and `GettextPO::File#messages`
+  methods.
 - Enable file each message method, message iterator each method flag
   iterator each method, message each sticky flag method, and message
   each workflow flag method to run without given block.
