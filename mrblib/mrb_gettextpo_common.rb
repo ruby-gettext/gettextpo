@@ -141,7 +141,12 @@ module GettextPO
             "please use other methods instead, such as GettextPO::Message#workflow_flag_iterator"
     end
 
-    def each # yields: flag
+    # call-seq:
+    #   each { |flag| ... }
+    #   each -> Enumerator
+    def each
+      block_given? or return enum_for
+
       while true
         begin
           yield self.next
