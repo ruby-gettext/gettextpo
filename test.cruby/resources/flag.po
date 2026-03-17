@@ -1,0 +1,3 @@
+#, fuzzy, no-wrap
+msgid "msgid1"
+msgstr "msgstr1"

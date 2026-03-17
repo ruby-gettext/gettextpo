@@ -82,7 +82,12 @@ module GettextPO
       positions
     end
 
-    def each_sticky_flag # yields: flag
+    # call-seq:
+    #   each_sticky_flag { |flag| ... }
+    #   each_sticky_flag -> Enumerator
+    def each_sticky_flag
+      block_given? or return enum_for(__method__)
+
       iter = sticky_flag_iterator
       while true
         begin

@@ -87,3 +87,12 @@ assert 'flags' do
   assert_true message.sticky_flag?('no-wrap')
   true
 end
+
+assert 'each flag' do
+  path = File.expand_path(File.join(__FILE__, "../../test.cruby/resources/flag.po"))
+  iterator = GettextPO::File.read(path).message_iterator
+  message = iterator.next
+  assert_equal ['no-wrap'], message.each_sticky_flag.to_a
+
+  true
+end
