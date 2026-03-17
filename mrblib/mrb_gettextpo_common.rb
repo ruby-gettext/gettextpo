@@ -45,7 +45,12 @@ module GettextPO
             "please use other methods instead, such as GettextPO::File#message_iterator"
     end
 
-    def each # yields: message
+    # call-seq:
+    #   each { |message| ... }
+    #   each -> Enumerator
+    def each
+      block_given? or return enum_for
+
       while true
         begin
           yield self.next

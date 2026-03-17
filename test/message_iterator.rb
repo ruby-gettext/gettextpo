@@ -33,10 +33,15 @@ end
 
 assert 'each' do
   path = File.expand_path(File.join(__FILE__, "../../test.cruby/resources/ok.po"))
-  iterator = GettextPO::File.read(path).message_iterator
+  file = GettextPO::File.read(path)
+  iterator = file.message_iterator
   messages = []
   iterator.each { |message| messages << message }
   assert_equal 2, messages.size
+
+  iterator = file.message_iterator
+  assert_equal ["", "msgid1"], iterator.each.map { |message| message.msgid }
+
   true
 end
 
