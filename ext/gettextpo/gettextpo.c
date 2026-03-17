@@ -489,7 +489,7 @@ UPDATE_FLAG (workflow);
  * Document-method: workflow_flag_iterator
  * call-seq: workflow_flag_iterator -> GettextPO::FlagIterator
  *
- * You may find it handy to use the #workflow_flag_iterator method to
+ * You may find it handy to use the #each_workflow_flag method to
  * iterate over the sticky flag.  This is for more versatile
  * manipulation.
  */
@@ -572,7 +572,7 @@ UPDATE_FLAG (sticky);
  * Document-method: sticky_flag_iterator
  * call-seq: sticky_flag_iterator -> GettextPO::FlagIterator
  *
- * You may find it handy to use the #sticky_flag_iterator method to
+ * You may find it handy to use the #each_sticky_flag method to
  * iterate over the sticky flag.  This is for more versatile
  * manipulation.
  */
