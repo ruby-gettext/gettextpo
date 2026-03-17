@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-require 'rake'
 require_relative "lib/gettextpo/version"
 
 Gem::Specification.new do |spec|
@@ -34,13 +33,10 @@ Gem::Specification.new do |spec|
   spec.metadata["homepage_uri"] = spec.homepage
   spec.metadata["source_code_uri"] = "https://git.disroot.org/gemmaro/ruby-gettextpo.git"
 
-  spec.files = FileList[
-    '*.md', 'COPYING', 'Gemfile', 'Rakefile',
-    'ext/**/*.rb',
-    'ext/**/*.c',
-    'ext/**/*.h',
-    'lib/**/*.rb',
-    'mrblib/mrb_gettextpo_common.rb',
+  spec.files = [
+    'COPYING', 'Gemfile', 'Rakefile', 'mrblib/mrb_gettextpo_common.rb',
+    *Dir['*.md'], *Dir['ext/**/*.rb'], *Dir['ext/**/*.c'],
+    *Dir['ext/**/*.h'], *Dir['lib/**/*.rb'],
   ]
   spec.require_paths = ["lib"]
   spec.extensions = ["ext/gettextpo/extconf.rb"]
