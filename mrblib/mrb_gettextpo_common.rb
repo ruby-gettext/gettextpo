@@ -98,7 +98,12 @@ module GettextPO
       end
     end
 
-    def each_workflow_flag # yields: flag
+    # call-seq:
+    #   each_workflow_flag { |flag| ... }
+    #   each_workflow_flag -> Enumerator
+    def each_workflow_flag
+      block_given? or return enum_for(__method__)
+
       iter = workflow_flag_iterator
       while true
         begin

@@ -3,8 +3,8 @@
 ## Unreleased
 
 - Enable file each message method, message iterator each method flag
-  iterator each method, and message each sticky flag method to run
-  without given block.
+  iterator each method, message each sticky flag method, and message
+  each workflow flag method to run without given block.
 
 ## CRuby and mruby version 0.3.0 - 2026-03-17
 
