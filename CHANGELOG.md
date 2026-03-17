@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## CRuby and mruby version 0.3.0 - 2026-03-17
+
 - Add `GettextPO::File#each_message`,
   `GettextPO::Message#each_workflow_flag`, and
   `GettextPO::Message#each_sticky_flag` methods.
