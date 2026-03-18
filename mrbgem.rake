@@ -18,7 +18,7 @@ MRuby::Gem::Specification.new('mruby-gettextpo') do |spec|
   spec.authors = 'gemmaro'
   spec.summary = 'GNU gettext PO parser for mruby'
   spec.version = '0.1.0'
-  spec.homepage = 'https://git.disroot.org/gemmaro/ruby-gettextpo'
+  spec.homepage = 'https://github.com/ruby-gettext/gettextpo'
   spec.linker.libraries << 'gettextpo'
   spec.add_test_dependency 'mruby-io'
 end

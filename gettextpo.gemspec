@@ -25,13 +25,13 @@ Gem::Specification.new do |spec|
 
   spec.summary = "GNU gettext PO file parser library"
   spec.description = "This gem is a Ruby library for the GNU gettext PO files.  This is a C binding of the libgettextpo library, which is part of the GNU gettext package."
-  spec.homepage = "https://git.disroot.org/gemmaro/ruby-gettextpo"
+  spec.homepage = "https://github.com/ruby-gettext/gettextpo"
   spec.license = "GPL-3.0-or-later" # https://spdx.org/licenses/
   spec.required_ruby_version = ">= 3.1.0"
   spec.requirements << 'libgettextpo'
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://git.disroot.org/gemmaro/ruby-gettextpo.git"
+  spec.metadata["source_code_uri"] = spec.homepage
 
   spec.files = [
     'COPYING', 'Gemfile', 'Rakefile', 'mrblib/mrb_gettextpo_common.rb',

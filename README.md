@@ -117,14 +117,13 @@ File structure:
 
 ## Contributing
 
-Bug reports and pull requests are welcome on [Disroot][disroot].
+Bug reports and pull requests are welcome on [GitHub][github].
 
 Other links:
 
 * [RubyGems](https://rubygems.org/gems/gettextpo)
-* [GitHub repository](https://github.com/gemmaro/ruby-gettextpo)
 
-[disroot]: https://git.disroot.org/gemmaro/ruby-gettextpo
+[github]: https://github.com/ruby-gettext/gettextpo
 
 ## License
 
