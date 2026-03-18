@@ -1,0 +1,35 @@
+# https://guides.rubygems.org/trusted-publishing/releasing-gems/
+name: Release
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+jobs:
+  push:
+    name: Push gem to RubyGems.org
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+      contents: write # IMPORTANT: this permission is required for `rake release` to push the release tag
+
+    environment: release
+
+    steps:
+      # Set up
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: ruby
+      - name: Install gettextpo to make compilation work
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes libgettextpo-dev
+
+      # Release
+      - uses: rubygems/release-gem@v1
