@@ -23,6 +23,7 @@ Rake::TestTask.new(:test) do |t|
   t.libs << "lib"
   t.test_files = FileList["test.cruby/**/*_test.rb"]
 end
+task test: :compile
 
 require "rake/extensiontask"
 
