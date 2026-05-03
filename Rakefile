@@ -29,7 +29,8 @@ Rake::TestTask.new(:test, &test_config)
 task test: :compile
 
 namespace :test do
-  RubyMemcheck.config(binary_name: "gettextpo/gettextpo")
+  RubyMemcheck.config(binary_name: "gettextpo/gettextpo",
+                      valgrind_generate_suppressions: true)
   RubyMemcheck::TestTask.new(valgrind: :compile, &test_config)
 end
 

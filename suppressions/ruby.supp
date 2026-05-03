@@ -1,0 +1,74 @@
+{
+  po_message_check_all
+  Memcheck:Leak
+  fun:calloc
+  ...
+  fun:po_message_check_all
+  ...
+}
+{
+  po_file_check_all
+  Memcheck:Leak
+  fun:calloc
+  ...
+  fun:po_file_check_all
+  ...
+}
+{
+  po_file_read_v3
+  Memcheck:Leak
+  fun:malloc
+  ...
+  fun:po_file_read_v3
+  ...
+}
+{
+  po_message_set_msgctxt
+  Memcheck:Leak
+  fun:malloc
+  ...
+  fun:po_message_set_msgctxt
+  ...
+}
+{
+  expected init leak (no problem)
+  Memcheck:Leak
+  fun:calloc
+  fun:ruby_xcalloc
+  ...
+  fun:Init_gettextpo
+  fun:dln_load
+}
+{
+  expected init leak (no problem)
+  Memcheck:Leak
+  fun:malloc
+  fun:ruby_xmalloc
+  ...
+  fun:Init_gettextpo
+  fun:dln_load
+}
+{
+  Calls po_message_comments, which returns constant string, so we don't have to/cannot free it
+  Memcheck:Leak
+  fun:malloc
+  ...
+  fun:gettextpo_po_message_m_comments
+  ...
+}
+{
+  Calls po_message_extracted_comments, which returns constant string, so we don't have to/cannot free it
+  Memcheck:Leak
+  fun:malloc
+  ...
+  fun:gettextpo_po_message_m_extracted_comments
+  ...
+}
+{
+  Calls po_file_domain_header, which returns constant string, so we don't have to/cannot free it
+  Memcheck:Leak
+  fun:malloc
+  ...
+  fun:gettextpo_po_file_m_domain_header
+  ...
+}
