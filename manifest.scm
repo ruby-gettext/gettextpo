@@ -22,6 +22,7 @@
              (gnu packages llvm)
              (gnu packages ruby)
              (gnu packages ruby-check)
+             (gnu packages ruby-xyz)
              (gnu packages base))
 
 (define-public gnu-gettext-1.0
@@ -40,4 +41,5 @@
                           clang
                           ruby-3.3
                           ruby-rake-compiler
+                          ruby-ruby-memcheck
                           gnu-make))

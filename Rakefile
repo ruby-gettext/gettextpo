@@ -17,13 +17,21 @@
 
 require "bundler/gem_tasks"
 require "rake/testtask"
+require "ruby_memcheck"
 
-Rake::TestTask.new(:test) do |t|
+test_config = lambda do |t|
   t.libs << "test.cruby"
   t.libs << "lib"
   t.test_files = FileList["test.cruby/**/*_test.rb"]
 end
+
+Rake::TestTask.new(:test, &test_config)
 task test: :compile
+
+namespace :test do
+  RubyMemcheck.config(binary_name: "gettextpo/gettextpo")
+  RubyMemcheck::TestTask.new(valgrind: :compile, &test_config)
+end
 
 require "rake/extensiontask"
 
