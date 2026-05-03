@@ -25,14 +25,6 @@
 
 #include "gettextpo.h"
 #include <gettext-po.h>
-#include <ruby/internal/core/rdata.h>
-#include <ruby/internal/core/rstring.h>
-#include <ruby/internal/error.h>
-#include <ruby/internal/globals.h>
-#include <ruby/internal/intern/string.h>
-#include <ruby/internal/module.h>
-#include <ruby/internal/scan_args.h>
-#include <ruby/internal/special_consts.h>
 
 #define ERROR                                                                 \
   rb_const_get (rb_const_get (rb_cObject, rb_intern ("GettextPO")),           \
