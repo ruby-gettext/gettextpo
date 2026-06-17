@@ -69,7 +69,7 @@ gettextpo_xerror (const int severity, const po_message_t message,
   if (message)
     {
       VALUE message_value = rb_obj_alloc (rb_cMessage);
-      DATA_PTR (message_value) = message;
+      RTYPEDDATA_DATA (message_value) = message;
       rb_ivar_set (message_value, rb_intern ("@file"),
                    *gettextpo_xerror_context.file);
       rb_hash_aset (kwargs, ID2SYM (rb_intern ("message")), message_value);
@@ -82,7 +82,7 @@ gettextpo_xerror (const int severity, const po_message_t message,
   if (filename && lineno != (size_t)(-1) && column != (size_t)(-1))
     rb_hash_aset (kwargs, ID2SYM (rb_intern ("column")), INT2NUM (column));
   rb_hash_aset (kwargs, ID2SYM (rb_intern ("multiline")),
-                multiline_p ? Qtrue : Qfalse);
+                multiline_p ? RUBY_Qtrue : RUBY_Qfalse);
   if (message_text)
     rb_hash_aset (kwargs, ID2SYM (rb_intern ("message_text")),
                   rb_str_new_cstr (message_text));
@@ -112,7 +112,7 @@ gettextpo_xerror2 (const int severity, const po_message_t message1,
   if (message1)
     {
       VALUE message_value1 = rb_obj_alloc (rb_cMessage);
-      DATA_PTR (message_value1) = message1;
+      RTYPEDDATA_DATA (message_value1) = message1;
       rb_ivar_set (message_value1, rb_intern ("@file"),
                    *gettextpo_xerror_context.file);
       rb_hash_aset (kwargs, ID2SYM (rb_intern ("message1")), message_value1);
@@ -125,14 +125,14 @@ gettextpo_xerror2 (const int severity, const po_message_t message1,
   if (filename1 && lineno1 != (size_t)(-1) && column1 != (size_t)(-1))
     rb_hash_aset (kwargs, ID2SYM (rb_intern ("column1")), INT2NUM (column1));
   rb_hash_aset (kwargs, ID2SYM (rb_intern ("multiline1")),
-                multiline_p1 ? Qtrue : Qfalse);
+                multiline_p1 ? RUBY_Qtrue : RUBY_Qfalse);
   if (message_text1)
     rb_hash_aset (kwargs, ID2SYM (rb_intern ("message_text1")),
                   rb_str_new_cstr (message_text1));
   if (message2)
     {
       VALUE message_value2 = rb_obj_alloc (rb_cMessage);
-      DATA_PTR (message_value2) = message2;
+      RTYPEDDATA_DATA (message_value2) = message2;
       rb_ivar_set (message_value2, rb_intern ("@file"),
                    *gettextpo_xerror_context.file);
       rb_hash_aset (kwargs, ID2SYM (rb_intern ("message2")), message_value2);
@@ -145,7 +145,7 @@ gettextpo_xerror2 (const int severity, const po_message_t message1,
   if (filename2 && lineno2 != (size_t)(-1) && column2 != (size_t)(-1))
     rb_hash_aset (kwargs, ID2SYM (rb_intern ("column2")), INT2NUM (column2));
   rb_hash_aset (kwargs, ID2SYM (rb_intern ("multiline2")),
-                multiline_p2 ? Qtrue : Qfalse);
+                multiline_p2 ? RUBY_Qtrue : RUBY_Qfalse);
   if (message_text2)
     rb_hash_aset (kwargs, ID2SYM (rb_intern ("message_text2")),
                   rb_str_new_cstr (message_text2));
@@ -191,7 +191,7 @@ gettextpo_po_flag_iterator_alloc (VALUE self)
 static VALUE
 gettextpo_po_flag_iterator_m_next (VALUE self)
 {
-  const char *flag = po_flag_next (DATA_PTR (self));
+  const char *flag = po_flag_next (RTYPEDDATA_DATA (self));
   if (flag)
     return rb_str_new_cstr (flag);
   else
@@ -221,16 +221,17 @@ gettextpo_po_message_alloc (VALUE self)
   VALUE                                                                       \
   gettextpo_po_message_m_##field (VALUE self)                                 \
   {                                                                           \
-    const char *string = po_message_##field (DATA_PTR (self));                \
-    return string ? rb_str_new_cstr (string) : Qnil;                          \
+    const char *string = po_message_##field (RTYPEDDATA_DATA (self));         \
+    return string ? rb_str_new_cstr (string) : RUBY_Qnil;                     \
   }
 #define OPTIONAL_STRING_SETTER(field)                                         \
   VALUE                                                                       \
   gettextpo_po_message_m_##field##_set (VALUE self, VALUE string)             \
   {                                                                           \
-    po_message_set_##field (                                                  \
-        DATA_PTR (self), NIL_P (string) ? NULL : StringValueCStr (string));   \
-    return Qnil;                                                              \
+    po_message_set_##field (RTYPEDDATA_DATA (self),                           \
+                            NIL_P (string) ? NULL                             \
+                                           : StringValueCStr (string));       \
+    return RUBY_Qnil;                                                         \
   }
 
 /**
@@ -252,14 +253,15 @@ OPTIONAL_STRING_SETTER (msgctxt);
   VALUE                                                                       \
   gettextpo_po_message_m_##field (VALUE self)                                 \
   {                                                                           \
-    return rb_str_new_cstr (po_message_##field (DATA_PTR (self)));            \
+    return rb_str_new_cstr (po_message_##field (RTYPEDDATA_DATA (self)));     \
   }
 #define STRING_SETTER(field)                                                  \
   VALUE                                                                       \
   gettextpo_po_message_m_##field##_set (VALUE self, VALUE string)             \
   {                                                                           \
-    po_message_set_##field (DATA_PTR (self), StringValueCStr (string));       \
-    return Qnil;                                                              \
+    po_message_set_##field (RTYPEDDATA_DATA (self),                           \
+                            StringValueCStr (string));                        \
+    return RUBY_Qnil;                                                         \
   }
 
 /**
@@ -308,8 +310,8 @@ VALUE
 gettextpo_po_message_m_msgstr_plural (VALUE self, VALUE index)
 {
   const char *msgstr_plural
-      = po_message_msgstr_plural (DATA_PTR (self), NUM2INT (index));
-  return msgstr_plural ? rb_str_new_cstr (msgstr_plural) : Qnil;
+      = po_message_msgstr_plural (RTYPEDDATA_DATA (self), NUM2INT (index));
+  return msgstr_plural ? rb_str_new_cstr (msgstr_plural) : RUBY_Qnil;
 }
 
 /**
@@ -322,9 +324,9 @@ gettextpo_po_message_m_msgstr_plural_set (VALUE self, VALUE index,
                                           VALUE msgstr_plural)
 {
   po_message_set_msgstr_plural (
-      DATA_PTR (self), NUM2INT (index),
+      RTYPEDDATA_DATA (self), NUM2INT (index),
       NIL_P (msgstr_plural) ? NULL : StringValueCStr (msgstr_plural));
-  return Qnil;
+  return RUBY_Qnil;
 }
 
 /**
@@ -398,14 +400,15 @@ OPTIONAL_STRING_SETTER (prev_msgid_plural);
   VALUE                                                                       \
   gettextpo_po_message_m_##field (VALUE self)                                 \
   {                                                                           \
-    return po_message_is_##field (DATA_PTR (self)) ? Qtrue : Qfalse;          \
+    return po_message_is_##field (RTYPEDDATA_DATA (self)) ? RUBY_Qtrue        \
+                                                          : RUBY_Qfalse;      \
   }
 #define BOOL_SETTER(field)                                                    \
   VALUE                                                                       \
   gettextpo_po_message_m_##field##_set (VALUE self, VALUE boolean)            \
   {                                                                           \
-    po_message_set_##field (DATA_PTR (self), RB_TEST (boolean));              \
-    return Qnil;                                                              \
+    po_message_set_##field (RTYPEDDATA_DATA (self), RB_TEST (boolean));       \
+    return RUBY_Qnil;                                                         \
   }
 
 /**
@@ -435,10 +438,10 @@ BOOL_SETTER (fuzzy);
   static VALUE gettextpo_po_message_m_##name##_flag_q (VALUE self,            \
                                                        VALUE flag)            \
   {                                                                           \
-    return po_message_has_##name##_flag (DATA_PTR (self),                     \
+    return po_message_has_##name##_flag (RTYPEDDATA_DATA (self),              \
                                          StringValueCStr (flag))              \
-               ? Qtrue                                                        \
-               : Qfalse;                                                      \
+               ? RUBY_Qtrue                                                   \
+               : RUBY_Qfalse;                                                 \
   }
 #define UPDATE_FLAG(name)                                                     \
   static VALUE gettextpo_po_message_m_update_##name##_flag (                  \
@@ -447,21 +450,22 @@ BOOL_SETTER (fuzzy);
     VALUE flag, kwargs;                                                       \
     rb_scan_args (argc, argv, "1:", &flag, &kwargs);                          \
     ID kwargs_ids[] = { rb_intern ("set") };                                  \
-    VALUE kwargs_vals[] = { Qundef };                                         \
+    VALUE kwargs_vals[] = { RUBY_Qundef };                                    \
     rb_get_kwargs (kwargs, kwargs_ids, 0,                                     \
                    sizeof (kwargs_ids) / sizeof (kwargs_ids[0]),              \
                    kwargs_vals);                                              \
                                                                               \
-    po_message_set_##name##_flag (DATA_PTR (self), StringValueCStr (flag),    \
-                                  RB_UNDEF_P (kwargs_vals[0])                 \
-                                      && RB_TEST (kwargs_vals[0]));           \
-    return Qnil;                                                              \
+    po_message_set_##name##_flag (                                            \
+        RTYPEDDATA_DATA (self), StringValueCStr (flag),                       \
+        RB_UNDEF_P (kwargs_vals[0]) && RB_TEST (kwargs_vals[0]));             \
+    return RUBY_Qnil;                                                         \
   }
 #define FLAG_ITER(name)                                                       \
   static VALUE gettextpo_po_message_m_##name##_flags_iterator (VALUE self)    \
   {                                                                           \
     VALUE iter = rb_obj_alloc (rb_cFlagIterator);                             \
-    DATA_PTR (iter) = po_message_##name##_flags_iterator (DATA_PTR (self));   \
+    RTYPEDDATA_DATA (iter)                                                    \
+        = po_message_##name##_flags_iterator (RTYPEDDATA_DATA (self));        \
     return iter;                                                              \
   }
 
@@ -495,18 +499,18 @@ FLAG_ITER (workflow);
 static VALUE
 gettextpo_po_message_m_format (VALUE self, VALUE format)
 {
-  int result
-      = po_message_get_format (DATA_PTR (self), StringValueCStr (format));
+  int result = po_message_get_format (RTYPEDDATA_DATA (self),
+                                      StringValueCStr (format));
   switch (result)
     {
     case 1:
-      return Qtrue;
+      return RUBY_Qtrue;
       break;
     case 0:
-      return Qfalse;
+      return RUBY_Qfalse;
       break;
     case -1:
-      return Qnil;
+      return RUBY_Qnil;
       break;
     default:
       rb_raise (ERROR, "unreachable");
@@ -520,9 +524,10 @@ gettextpo_po_message_m_format (VALUE self, VALUE format)
 VALUE
 gettextpo_po_message_m_format_q (VALUE self, VALUE format)
 {
-  return po_message_is_format (DATA_PTR (self), StringValueCStr (format))
-             ? Qtrue
-             : Qfalse;
+  return po_message_is_format (RTYPEDDATA_DATA (self),
+                               StringValueCStr (format))
+             ? RUBY_Qtrue
+             : RUBY_Qfalse;
 }
 
 /**
@@ -536,15 +541,15 @@ gettextpo_po_message_m_format_set (int argc, VALUE *argv, VALUE self)
   VALUE format, kwargs;
   rb_scan_args (argc, argv, "1:", &format, &kwargs);
   ID kwargs_ids[] = { rb_intern ("opposite"), rb_intern ("remove") };
-  VALUE kwargs_vals[] = { Qundef, Qundef };
+  VALUE kwargs_vals[] = { RUBY_Qundef, RUBY_Qundef };
   rb_get_kwargs (kwargs, kwargs_ids, 0, 2, kwargs_vals);
   bool opposite = !RB_UNDEF_P (kwargs_vals[0]) && RB_TEST (kwargs_vals[0]);
   bool remove = !RB_UNDEF_P (kwargs_vals[1]) && RB_TEST (kwargs_vals[1]);
   if (opposite && remove)
     rb_raise (ERROR, "opposite and remove cannot be set at the same time");
-  po_message_set_format (DATA_PTR (self), StringValueCStr (format),
+  po_message_set_format (RTYPEDDATA_DATA (self), StringValueCStr (format),
                          opposite ? 0 : (remove ? -1 : 1));
-  return Qnil;
+  return RUBY_Qnil;
 }
 
 #ifdef HAVE_PO_MESSAGE_GET_FORMAT
@@ -582,8 +587,9 @@ gettextpo_po_message_m_range (VALUE self, VALUE range)
   rb_range_values (range, &min, &max, &exclude);
   int min_int = NUM2INT (min);
   int max_int = NUM2INT (max);
-  return po_message_is_range (DATA_PTR (self), &min_int, &max_int) ? Qtrue
-                                                                   : Qfalse;
+  return po_message_is_range (RTYPEDDATA_DATA (self), &min_int, &max_int)
+             ? RUBY_Qtrue
+             : RUBY_Qfalse;
 }
 
 /**
@@ -595,8 +601,8 @@ gettextpo_po_message_m_range_set (VALUE self, VALUE range)
   VALUE min, max;
   int exclude;
   rb_range_values (range, &min, &max, &exclude);
-  po_message_set_range (DATA_PTR (self), min, max);
-  return Qnil;
+  po_message_set_range (RTYPEDDATA_DATA (self), min, max);
+  return RUBY_Qnil;
 }
 
 /**
@@ -607,17 +613,18 @@ gettextpo_po_message_m_range_set (VALUE self, VALUE range)
 VALUE
 gettextpo_po_message_m_filepos (VALUE self, VALUE index)
 {
-  po_filepos_t pos = po_message_filepos (DATA_PTR (self), NUM2INT (index));
+  po_filepos_t pos
+      = po_message_filepos (RTYPEDDATA_DATA (self), NUM2INT (index));
   if (pos)
     {
       VALUE filepos = rb_obj_alloc (rb_cFilePos);
-      DATA_PTR (filepos) = pos;
+      RTYPEDDATA_DATA (filepos) = pos;
       rb_ivar_set (filepos, rb_intern ("@file"),
                    rb_ivar_get (self, rb_intern ("@file")));
       return filepos;
     }
   else
-    return Qnil;
+    return RUBY_Qnil;
 }
 
 /**
@@ -626,8 +633,8 @@ gettextpo_po_message_m_filepos (VALUE self, VALUE index)
 VALUE
 gettextpo_po_message_m_remove_filepos (VALUE self, VALUE index)
 {
-  po_message_remove_filepos (DATA_PTR (self), NUM2INT (index));
-  return Qnil;
+  po_message_remove_filepos (RTYPEDDATA_DATA (self), NUM2INT (index));
+  return RUBY_Qnil;
 }
 
 /**
@@ -636,9 +643,9 @@ gettextpo_po_message_m_remove_filepos (VALUE self, VALUE index)
 VALUE
 gettextpo_po_message_m_add_filepos (VALUE self, VALUE file, VALUE start_line)
 {
-  po_message_add_filepos (DATA_PTR (self), StringValueCStr (file),
+  po_message_add_filepos (RTYPEDDATA_DATA (self), StringValueCStr (file),
                           NUM2INT (start_line));
-  return Qnil;
+  return RUBY_Qnil;
 }
 
 /**
@@ -652,20 +659,20 @@ gettextpo_po_message_m_check_all (int argc, VALUE *argv, VALUE self)
   VALUE iterator, kwargs;
   rb_scan_args (argc, argv, "1:", &iterator, &kwargs);
   ID kwargs_ids[] = { rb_intern ("xerror"), rb_intern ("xerror2") };
-  VALUE kwargs_vals[] = { Qundef, Qundef };
+  VALUE kwargs_vals[] = { RUBY_Qundef, RUBY_Qundef };
   rb_get_kwargs (kwargs, kwargs_ids, 0, 2, kwargs_vals);
   gettextpo_xerror_context_reset ();
   VALUE file = rb_ivar_get (self, rb_intern ("@file"));
   gettextpo_xerror_context.file = &file;
-  if (kwargs_vals[0] != Qundef)
+  if (kwargs_vals[0] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror = &kwargs_vals[0];
-  if (kwargs_vals[1] != Qundef)
+  if (kwargs_vals[1] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror2 = &kwargs_vals[1];
-  po_message_check_all (DATA_PTR (self), DATA_PTR (iterator),
+  po_message_check_all (RTYPEDDATA_DATA (self), RTYPEDDATA_DATA (iterator),
                         &gettextpo_xerror_handler);
   if (gettextpo_xerror_context.error)
     rb_raise (ERROR, "check all for message failed");
-  return Qnil;
+  return RUBY_Qnil;
 }
 
 /**
@@ -679,19 +686,19 @@ gettextpo_po_message_m_check_format (int argc, VALUE *argv, VALUE self)
   VALUE kwargs;
   rb_scan_args (argc, argv, ":", &kwargs);
   ID kwargs_ids[] = { rb_intern ("xerror"), rb_intern ("xerror2") };
-  VALUE kwargs_vals[] = { Qundef, Qundef };
+  VALUE kwargs_vals[] = { RUBY_Qundef, RUBY_Qundef };
   rb_get_kwargs (kwargs, kwargs_ids, 0, 2, kwargs_vals);
   gettextpo_xerror_context_reset ();
   VALUE file = rb_ivar_get (self, rb_intern ("@file"));
   gettextpo_xerror_context.file = &file;
-  if (kwargs_vals[0] != Qundef)
+  if (kwargs_vals[0] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror = &kwargs_vals[0];
-  if (kwargs_vals[1] != Qundef)
+  if (kwargs_vals[1] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror2 = &kwargs_vals[1];
-  po_message_check_format (DATA_PTR (self), &gettextpo_xerror_handler);
+  po_message_check_format (RTYPEDDATA_DATA (self), &gettextpo_xerror_handler);
   if (gettextpo_xerror_context.error)
     rb_raise (ERROR, "check format for message failed");
-  return Qnil;
+  return RUBY_Qnil;
 }
 
 /* ********** file ********** */
@@ -724,7 +731,7 @@ gettextpo_po_file_alloc (VALUE self)
 VALUE
 gettextpo_po_file_m_initialize (VALUE self)
 {
-  DATA_PTR (self) = po_file_create ();
+  RTYPEDDATA_DATA (self) = po_file_create ();
   return self;
 }
 
@@ -745,20 +752,20 @@ gettextpo_po_file_m_read (int argc, VALUE *argv, VALUE klass)
   VALUE filename, kwargs;
   rb_scan_args (argc, argv, "1:", &filename, &kwargs);
   ID kwargs_ids[] = { rb_intern ("xerror"), rb_intern ("xerror2") };
-  VALUE kwargs_vals[] = { Qundef, Qundef };
+  VALUE kwargs_vals[] = { RUBY_Qundef, RUBY_Qundef };
   rb_get_kwargs (kwargs, kwargs_ids, 0, 2, kwargs_vals);
   gettextpo_xerror_context_reset ();
   VALUE self = rb_obj_alloc (klass);
   gettextpo_xerror_context.file = &self;
-  if (kwargs_vals[0] != Qundef)
+  if (kwargs_vals[0] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror = &kwargs_vals[0];
-  if (kwargs_vals[1] != Qundef)
+  if (kwargs_vals[1] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror2 = &kwargs_vals[1];
   po_file_t file
       = po_file_read (StringValueCStr (filename), &gettextpo_xerror_handler);
   if (file)
     {
-      DATA_PTR (self) = file;
+      RTYPEDDATA_DATA (self) = file;
       if (gettextpo_xerror_context.error)
         rb_raise (ERROR, "failed to read");
       return self;
@@ -778,25 +785,25 @@ gettextpo_po_file_m_write (int argc, VALUE *argv, VALUE self)
   VALUE filename, kwargs;
   rb_scan_args (argc, argv, "1:", &filename, &kwargs);
   ID kwargs_ids[] = { rb_intern ("xerror"), rb_intern ("xerror2") };
-  VALUE kwargs_vals[] = { Qundef, Qundef };
+  VALUE kwargs_vals[] = { RUBY_Qundef, RUBY_Qundef };
   rb_get_kwargs (kwargs, kwargs_ids, 0, 2, kwargs_vals);
   gettextpo_xerror_context_reset ();
   gettextpo_xerror_context.file = &self;
-  if (kwargs_vals[0] != Qundef)
+  if (kwargs_vals[0] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror = &kwargs_vals[0];
-  if (kwargs_vals[1] != Qundef)
+  if (kwargs_vals[1] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror2 = &kwargs_vals[1];
-  po_file_write (DATA_PTR (self), StringValueCStr (filename),
+  po_file_write (RTYPEDDATA_DATA (self), StringValueCStr (filename),
                  &gettextpo_xerror_handler);
   if (gettextpo_xerror_context.error)
     rb_raise (ERROR, "failed to write");
-  return Qnil;
+  return RUBY_Qnil;
 }
 
 VALUE
 gettextpo_po_file_m_domains (VALUE self)
 {
-  const char *const *domains = po_file_domains (DATA_PTR (self));
+  const char *const *domains = po_file_domains (RTYPEDDATA_DATA (self));
   VALUE result = rb_ary_new ();
   for (size_t index = 0; domains[index]; index++)
     rb_ary_push (result, rb_str_new_cstr (domains[index]));
@@ -817,8 +824,9 @@ gettextpo_po_file_m_message_iterator (int argc, VALUE *argv, VALUE self)
   VALUE domain;
   rb_scan_args (argc, argv, "01", &domain);
   VALUE iterator = rb_obj_alloc (rb_cMessageIterator);
-  DATA_PTR (iterator) = po_message_iterator (
-      DATA_PTR (self), NIL_P (domain) ? NULL : StringValueCStr (domain));
+  RTYPEDDATA_DATA (iterator)
+      = po_message_iterator (RTYPEDDATA_DATA (self),
+                             NIL_P (domain) ? NULL : StringValueCStr (domain));
   rb_ivar_set (iterator, rb_intern ("@file"), self);
   return iterator;
 }
@@ -836,8 +844,9 @@ gettextpo_po_file_m_domain_header (int argc, VALUE *argv, VALUE self)
   VALUE domain;
   rb_scan_args (argc, argv, "01", &domain);
   const char *header = po_file_domain_header (
-      DATA_PTR (self), NIL_P (domain) ? NULL : StringValueCStr (domain));
-  return header ? rb_str_new_cstr (header) : Qnil;
+      RTYPEDDATA_DATA (self),
+      NIL_P (domain) ? NULL : StringValueCStr (domain));
+  return header ? rb_str_new_cstr (header) : RUBY_Qnil;
 }
 
 /**
@@ -851,18 +860,18 @@ gettextpo_po_file_m_check_all (int argc, VALUE *argv, VALUE self)
   VALUE kwargs;
   rb_scan_args (argc, argv, ":", &kwargs);
   ID kwargs_ids[] = { rb_intern ("xerror"), rb_intern ("xerror2") };
-  VALUE kwargs_vals[] = { Qundef, Qundef };
+  VALUE kwargs_vals[] = { RUBY_Qundef, RUBY_Qundef };
   rb_get_kwargs (kwargs, kwargs_ids, 0, 2, kwargs_vals);
   gettextpo_xerror_context_reset ();
   gettextpo_xerror_context.file = &self;
-  if (kwargs_vals[0] != Qundef)
+  if (kwargs_vals[0] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror = &kwargs_vals[0];
-  if (kwargs_vals[1] != Qundef)
+  if (kwargs_vals[1] != RUBY_Qundef)
     gettextpo_xerror_context.user_xerror2 = &kwargs_vals[1];
-  po_file_check_all (DATA_PTR (self), &gettextpo_xerror_handler);
+  po_file_check_all (RTYPEDDATA_DATA (self), &gettextpo_xerror_handler);
   if (gettextpo_xerror_context.error)
     rb_raise (ERROR, "check all for file failed");
-  return Qnil;
+  return RUBY_Qnil;
 }
 
 /* ********** iterator ********** */
@@ -888,11 +897,11 @@ gettextpo_po_message_iterator_alloc (VALUE self)
 VALUE
 gettextpo_po_message_iterator_m_next (VALUE self)
 {
-  po_message_t message = po_next_message (DATA_PTR (self));
+  po_message_t message = po_next_message (RTYPEDDATA_DATA (self));
   if (message)
     {
       VALUE message_value = rb_obj_alloc (rb_cMessage);
-      DATA_PTR (message_value) = message;
+      RTYPEDDATA_DATA (message_value) = message;
       rb_ivar_set (message_value, rb_intern ("@file"),
                    rb_ivar_get (self, rb_intern ("@file")));
       return message_value;
@@ -910,9 +919,9 @@ gettextpo_po_message_iterator_m_insert (VALUE self, VALUE msgid, VALUE msgstr)
   po_message_t message = po_message_create ();
   po_message_set_msgid (message, StringValueCStr (msgid));
   po_message_set_msgstr (message, StringValueCStr (msgstr));
-  po_message_insert (DATA_PTR (self), message);
+  po_message_insert (RTYPEDDATA_DATA (self), message);
   VALUE value = rb_obj_alloc (rb_cMessage);
-  DATA_PTR (value) = message;
+  RTYPEDDATA_DATA (value) = message;
   rb_ivar_set (value, rb_intern ("@file"),
                rb_ivar_get (self, rb_intern ("@file")));
   return value;
@@ -943,8 +952,8 @@ gettextpo_po_filepos_alloc (VALUE self)
 VALUE
 gettextpo_po_filepos_m_file (VALUE self)
 {
-  const char *file = po_filepos_file (DATA_PTR (self));
-  return file ? rb_str_new_cstr (file) : Qnil;
+  const char *file = po_filepos_file (RTYPEDDATA_DATA (self));
+  return file ? rb_str_new_cstr (file) : RUBY_Qnil;
 }
 
 /**
@@ -953,8 +962,8 @@ gettextpo_po_filepos_m_file (VALUE self)
 VALUE
 gettextpo_po_filepos_m_start_line (VALUE self)
 {
-  size_t start_line = po_filepos_start_line (DATA_PTR (self));
-  return start_line == (size_t)(-1) ? Qnil : INT2NUM (start_line);
+  size_t start_line = po_filepos_start_line (RTYPEDDATA_DATA (self));
+  return start_line == (size_t)(-1) ? RUBY_Qnil : INT2NUM (start_line);
 }
 
 /* ********** others ********** */
@@ -976,7 +985,7 @@ gettextpo_m_header_entry_value (VALUE self, VALUE header, VALUE field)
       return value;
     }
   else
-    return Qnil;
+    return RUBY_Qnil;
 }
 
 /**
@@ -1017,7 +1026,7 @@ VALUE
 gettextpo_po_format_pretty_name (VALUE self, VALUE format)
 {
   const char *name = po_format_pretty_name (StringValueCStr (format));
-  return name ? rb_str_new_cstr (name) : Qnil;
+  return name ? rb_str_new_cstr (name) : RUBY_Qnil;
 }
 
 /* ********** init ********** */
