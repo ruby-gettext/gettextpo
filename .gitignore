@@ -16,3 +16,4 @@ mkmf.log
 /build_config.rb.lock
 /sample.rb
 /test.cruby/tmp/*.po
+/Gemfile.lock
