@@ -17,7 +17,14 @@
 
 require "bundler/gem_tasks"
 require "rake/testtask"
-require "ruby_memcheck"
+
+skip_memcheck = false
+begin
+  require "ruby_memcheck"
+rescue LoadError
+  $stderr.puts "warn: Skip loading memcheck"
+  skip_memcheck = true
+end
 
 test_config = lambda do |t|
   t.libs << "test.cruby"
@@ -28,10 +35,12 @@ end
 Rake::TestTask.new(:test, &test_config)
 task test: :compile
 
-namespace :test do
-  RubyMemcheck.config(binary_name: "gettextpo/gettextpo",
-                      valgrind_generate_suppressions: true)
-  RubyMemcheck::TestTask.new(valgrind: :compile, &test_config)
+unless skip_memcheck
+  namespace :test do
+    RubyMemcheck.config(binary_name: "gettextpo/gettextpo",
+                        valgrind_generate_suppressions: true)
+    RubyMemcheck::TestTask.new(valgrind: :compile, &test_config)
+  end
 end
 
 require "rake/extensiontask"
