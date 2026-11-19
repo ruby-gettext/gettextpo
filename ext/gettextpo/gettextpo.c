@@ -976,6 +976,7 @@ gettextpo_po_filepos_m_start_line (VALUE self)
 VALUE
 gettextpo_m_header_entry_value (VALUE self, VALUE header, VALUE field)
 {
+  (void)self;
   char *string
       = po_header_field (StringValueCStr (header), StringValueCStr (field));
   if (string)
@@ -997,6 +998,7 @@ VALUE
 gettextpo_m_header_with_updated_entry_value (VALUE self, VALUE header,
                                              VALUE field, VALUE value)
 {
+  (void)self;
   char *updated_header
       = po_header_set_field (StringValueCStr (header), StringValueCStr (field),
                              StringValueCStr (value));
@@ -1008,6 +1010,7 @@ gettextpo_m_header_with_updated_entry_value (VALUE self, VALUE header,
 VALUE
 gettextpo_po_format_list (VALUE self)
 {
+  (void)self;
   VALUE list = rb_ary_new ();
   const char *const *formats = po_format_list ();
   for (size_t index = 0; formats[index]; index++)
@@ -1025,6 +1028,7 @@ gettextpo_po_format_list (VALUE self)
 VALUE
 gettextpo_po_format_pretty_name (VALUE self, VALUE format)
 {
+  (void)self;
   const char *name = po_format_pretty_name (StringValueCStr (format));
   return name ? rb_str_new_cstr (name) : RUBY_Qnil;
 }
